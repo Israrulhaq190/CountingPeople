@@ -49,5 +49,4 @@ def draw(name_of_window, img_copy):
         elif k == ord('b'):
             mode = 'w'
     cv2.destroyAllWindows()
-    return {'intresting_zone': transform.rect_to_point_for_line(points_of_intresting_place), 'red_up_line': up_line,\
-            'blue_down_line': down_line}
+    return transform.rect_to_point_for_line(points_of_intresting_place), up_line, down_line

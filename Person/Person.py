@@ -6,20 +6,20 @@ class Person:
     
     color_id_and_cout_of_person = 0 # id box tracker color of person and also it is count of all people on video
     
-    def __init__(self, ids: int, x: int, y: int, w: int, h: int) -> None:
+    def __init__(self, ids: int, box: List[float]) -> None:
         """ Contructor """
         Person.color_id_and_cout_of_person += 1
         np.random.seed(Person.color_id_and_cout_of_person)
-        self.ids: int = ids
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
+        self.ids = ids
+        self.x = int(box[0])
+        self.y = int(box[1])
+        self.w = int(abs(box[0] - box[2]))
+        self.h = int(abs(box[1] - box[3]))
         self.R = np.random.randint(255)
         self.G = np.random.randint(255)
         self.B = np.random.randint(255)
-        self.cx = int(x + w / 2) # Cast to int because pixel can't be a fractional
-        self.cy = int(y + h / 2) # Cast to int because pixel can't be a fractional
+        self.cx = int(self.x + self.w / 2) # Cast to int because pixel can't be a fractional
+        self.cy = int(self.y + self.h / 2) # Cast to int because pixel can't be a fractional
         self.trace = [(self.cx, self.cy)]
         
     def get_id(self) -> int:
@@ -46,12 +46,16 @@ class Person:
         """ Get y coordinate """
         return self.y
     
-    def update_coordinates(self, nx: int, ny: int, nw: int, nh: int) -> None:
+    def get_box(self) -> Tuple[Tuple[int]]:
+        """ Get box for draw """
+        return (self.x, self.y), (self.x + self.w, self.y + self.h)
+    
+    def update_coordinates(self, box: List[int]) -> None:
         """ Update coordinates of person """
-        self.x = nx
-        self.y = ny
-        self.w = nw
-        self.h = nh
-        self.cx = int(nx + nw / 2) # Cast to int because pixel can't be a fractional
-        self.cy = int(ny + nh / 2) # Cast to int because pixel can't be a fractional
+        self.x = int(box[0])
+        self.y = int(box[1])
+        self.w = int(abs(box[0] - box[2]))
+        self.h = int(abs(box[1] - box[3]))
+        self.cx = int(self.x + self.w / 2) # Cast to int because pixel can't be a fractional
+        self.cy = int(self.y + self.h / 2) # Cast to int because pixel can't be a fractional
         self.trace.append((self.cx, self.cy))
